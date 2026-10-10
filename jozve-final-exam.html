@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>جزوه امتحان نهایی | ایران دیجیتال</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f6fa; --card:#fff; --ink:#1c2233; --muted:#6b7285; --line:#e3e6ee;
+  --brand:#3b5bdb; --ok:#1b8a5a; --ok-bg:#e6f6ee; --code-bg:#1e2230; --code-ink:#e6e9f2;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.9}
+header{background:var(--brand);color:#fff;padding:28px 16px 24px;text-align:center}
+header h1{margin:0 0 4px;font-size:1.35rem}
+header p{margin:0;opacity:.85;font-size:.9rem}
+main{max-width:760px;margin:0 auto;padding:16px}
+.q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.q-head{display:flex;gap:10px;align-items:flex-start}
+.num{flex:none;width:32px;height:32px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.9rem}
+.q-text{flex:1;margin:0}
+.pts{color:var(--muted);font-size:.8rem;white-space:nowrap}
+pre{direction:ltr;text-align:left;background:var(--code-bg);color:var(--code-ink);padding:12px 14px;border-radius:10px;overflow-x:auto;font-size:.85rem;line-height:1.6;margin:12px 0}
+code{font-family:Consolas,"Courier New",monospace;direction:ltr;unicode-bidi:embed}
+p code,li code{background:#eef0f7;padding:1px 6px;border-radius:5px;font-size:.88em}
+ul.opts{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+ul.opts li{border:1px solid var(--line);border-radius:10px;padding:6px 12px}
+ul.opts li.ok{background:var(--ok-bg);border-color:var(--ok);color:var(--ok);font-weight:600}
+ul.opts li.ok::before{content:"✓ "}
+.why{margin-top:12px;padding:10px 12px;border-right:4px solid var(--brand);background:#eef1fd;border-radius:8px;font-size:.92rem}
+.why b{color:var(--brand)}
+.out{direction:ltr;text-align:left;font-family:Consolas,monospace;background:#eef0f7;border-radius:8px;padding:6px 10px;margin-top:8px;font-size:.85rem}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 16px 40px}
+@media print{header{background:none;color:#000}.q{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header>
+  <h1>جزوه امتحان نهایی</h1>
+  <p>ایران دیجیتال • مرور سوال‌ها، پاسخ‌ها و نکته‌های هر سوال</p>
+</header>
+<main id="app"></main>
+<footer>این جزوه برای مرور شخصی ساخته شده است.</footer>
+
+<script>
+const Q = [
+{t:"خروجی کد زیر کدوم گزینه‌ست؟",p:3,
+ code:`def format_name(first, last="Smith", title="Mr."):
+    return f"{title} {first} {last}"
+
+print(format_name("John", title="Dr."))`,
+ o:["Dr. John Smith","Mr. John Smith","Dr. John","John Smith"],a:0,
+ w:"آرگومان <code>title</code> با نام داده شده و <code>Dr.</code> جای مقدار پیش‌فرض رو می‌گیره. <code>last</code> هم چون ارسال نشده، همون <code>\"Smith\"</code> می‌مونه."},
+
+{t:"با اجرای کد زیر، چه رشته‌ای در خروجی نمایش داده میشه؟",p:5,
+ code:`class Animal:
+    def __init__(self, name):
+        self.name = name
+    def speak(self):
+        return self.name + " makes a sound"
+
+class Dog(Animal):
+    def speak(self):
+        return self.name + " barks"
+
+d = Dog("Rex")
+print(d.speak())`,
+ o:["Rex makes a sound","Rex barks","Dog barks","Dog makes a sound"],a:1,
+ w:"کلاس <code>Dog</code> متد <code>speak</code> رو بازنویسی (override) کرده، پس نسخه‌ی خودش اجرا میشه. <code>__init__</code> از <code>Animal</code> ارث برده میشه و <code>name</code> رو <code>\"Rex\"</code> می‌کنه."},
+
+{t:"کدوم گزینه راجع به توابع ماژول <code>math</code> درسته؟",p:3,
+ o:["تابع math.pow(3) فقط یک ورودی می‌گیره و خطا نمی‌ده.","تابع math.sqrt(16) مقدار \"4\" (رشته) رو برمی‌گردونه.","تابع math.sqrt(9) مقدار 4 رو برمی‌گردونه.","تابع math.pow(2, 3) مقدار 8.0 رو برمی‌گردونه."],a:3,
+ w:"<code>math.pow</code> دو ورودی می‌خواد و همیشه عدد اعشاری (float) برمی‌گردونه. <code>math.sqrt</code> هم عدد اعشاری میده: <code>sqrt(16) = 4.0</code> و <code>sqrt(9) = 3.0</code>."},
+
+{t:"کد زیر قراره از فایل <code>names.txt</code> فقط اولین خط رو بخونه و در <code>first_line</code> ذخیره کنه. خط اشتباه یا ناقص رو درست کن و مطمئن شو فایل بسته میشه.",p:6,
+ code:`with open("names.txt", "r") as file:
+    first_line = file.readline()
+
+print(first_line)`,
+ w:"<code>readline()</code> فقط یک خط می‌خونه (<code>read()</code> کل فایل و <code>readlines()</code> همه‌ی خط‌ها رو میده). ساختار <code>with</code> بعد از پایان بلوک، فایل رو خودکار می‌بنده و نیازی به <code>close()</code> نیست."},
+
+{t:"خروجی کد زیر در کدوم گزینه نمایش داده شده؟",p:4,
+ code:`try:
+    a = "5"
+    b = int(a) + int("x")
+    print(b)
+except ValueError:
+    print("Error happened")`,
+ o:["5x","10","Error happened","خروجی نداره."],a:2,
+ w:"تبدیل <code>int(\"x\")</code> خطای <code>ValueError</code> میده، قبل از اینکه <code>print(b)</code> اجرا بشه. اجرا میره سراغ <code>except</code> و پیام چاپ میشه."},
+
+{t:"کد زیر چه تغییری در داده‌ها ایجاد می‌کنه؟ (فایل <code>scores.csv</code> ستون‌های <code>name</code> و <code>score</code> داره)",p:4,
+ code:`import pandas as pd
+df = pd.read_csv("scores.csv")
+df.loc[df["score"] < 10, "score"] += 1`,
+ o:["نمره همه‌ی دانش‌آموزها ۱ نمره بیشتر می‌شه.","فقط سطرهایی که نمره بیشتر از ۱۰ دارن حذف می‌شن.","به نمره دانش‌آموزهایی که کمتر از ۱۰ گرفتن، ۱ نمره اضافه می‌شه.","یک ستون جدید به اسم score با مقدار اولیه 1 ساخته میشه."],a:2,
+ w:"الگوی <code>df.loc[شرط, \"ستون\"]</code> یعنی «فقط روی سطرهایی که شرط برقراره، این ستون رو تغییر بده»."},
+
+{t:"تابع زیر چی کار می‌کنه؟",p:4,
+ code:`import datetime as dt
+
+def get_interval(date):
+    return dt.date.today() - date`,
+ o:["تعداد روزهایی که از تاریخ داده‌شده تا امروز گذشته رو حساب می‌کنه.","تاریخ امروز رو به تاریخ ورودی تبدیل می‌کنه.","عدد روز تاریخ ورودی رو جدا می‌کنه.","اختلاف ساعت بین زمان فعلی و زمان ورودی رو برمی‌گردونه."],a:0,
+ w:"کم کردن دو تاریخ، یک شیء <code>timedelta</code> میده که تعداد روزها رو نشون میده."},
+
+{t:"با <code>pandas</code> فایل <code>students.csv</code> رو بخون و میانگین ستون <code>age</code> رو در متغیر <code>average</code> ذخیره کن.",p:8,
+ code:`import pandas as pd
+
+df = pd.read_csv("students.csv")
+average = df["age"].mean()
+print(average)`,
+ w:"هر ستون دیتافریم یک <code>Series</code> هست و متدهایی مثل <code>mean()</code>، <code>sum()</code>، <code>max()</code> و <code>min()</code> داره."},
+
+{t:"با اجرای کد زیر، کدوم عنصر لیست در خروجی چاپ میشه؟",p:3,
+ code:`chars = ['P', 'y', 't', 'h', 'o', 'n']
+print(chars[-3])`,
+ o:["y","o","p","h"],a:3,
+ w:"اندیس منفی از انتها شمرده میشه: <code>-1</code> یعنی <code>'n'</code>، <code>-2</code> یعنی <code>'o'</code> و <code>-3</code> یعنی <code>'h'</code>."},
+
+{t:"خروجی کد زیر چیه؟",p:4,
+ code:`import datetime as dt
+
+d1 = dt.datetime(2024, 5, 1)
+d2 = dt.datetime(2024, 5, 10)
+diff = d2 - d1
+print(diff.days)`,
+ o:["0","9","8","7"],a:1,
+ w:"اختلاف ۱۰ ام و ۱ ام می‌شه ۹ روز. ویژگی <code>.days</code> تعداد روزهای <code>timedelta</code> رو میده."},
+
+{t:"کدوم بخش از برنامه زیر، نمودار رو نمایش میده؟",p:3,
+ code:`import pygal
+chart = pygal.Bar()
+chart.title = "Scores"
+chart.add("A", 10)
+chart.add("B", 15)
+chart.render()`,
+ o:["pygal.Bar()","chart.title = \"Scores\"","chart.add(\"A\", 10)","chart.render()"],a:3,
+ w:"بقیه‌ی خط‌ها نمودار رو می‌سازن و داده می‌دن، ولی خروجی نهایی با <code>render()</code> تولید میشه."},
+
+{t:"متد سازنده‌ی کلاس <code>Alarm</code> رو طوری پیاده‌سازی کن که هر شیء ویژگی‌های <code>time</code> و <code>message</code> داشته باشه.",p:8,
+ code:`class Alarm:
+    def __init__(self, time, message):
+        self.time = time
+        self.message = message
+
+a = Alarm("07:30", "Wake up!")
+print(a.time, a.message)`,
+ w:"نام ورودی‌های <code>__init__</code> باید با ویژگی‌ها یکی باشه و هر کدوم با <code>self.</code> ذخیره بشه."},
+
+{t:"کدوم گزینه به عدد 5 در آرایه‌ی زیر دسترسی پیدا می‌کنه؟",p:3,
+ code:`import numpy as np
+a = np.array([[1, 2, 3],
+              [4, 5, 6],
+              [7, 8, 9]])`,
+ o:["a[1, 1]","a[2, 2]","a[0, 0]","a[1,2]"],a:0,
+ w:"فرمت <code>a[سطر, ستون]</code> از صفر شروع میشه. عدد 5 در سطر دوم (اندیس ۱) و ستون دوم (اندیس ۱) هست."},
+
+{t:"با اجرای کد زیر، کدوم گزینه مقدار <code>result</code> رو به درستی نمایش میده؟",p:3,
+ code:`nums = [5, 10, 15, 20]
+result = list(filter(lambda x: x > 10, nums))`,
+ o:["[5, 10]","[20, 15]","[10, 15, 20]","[5, 10, 15, 20]"],a:1,
+ w:"<code>filter</code> فقط عناصری که شرط <code>x > 10</code> رو دارن نگه می‌داره، یعنی ۱۵ و ۲۰ با همین ترتیب. نتیجه‌ی واقعی <code>[15, 20]</code> هست و در بین گزینه‌ها نزدیک‌ترینش همونیه که روی صفحه‌ی ذخیره‌شده به شکل <code>[20, 15]</code> دیده میشه (احتمالاً بخاطر راست‌به‌چین بودن صفحه، ترتیب جابه‌جا نمایش داده شده)."},
+
+{t:"متد <code>describe()</code> چه اطلاعاتی از دیتافریم رو نمایش می‌ده؟",p:3,
+ o:["کمترین مقدار هر ستون","بیشترین مقدار هر ستون","مقدار میانگین هر ستون","همه موارد"],a:3,
+ w:"<code>describe()</code> یک خلاصه‌ی آماری میده: تعداد، میانگین، انحراف معیار، کمترین، چارک‌ها و بیشترین."},
+
+{t:"تابع <code>get_middle()</code> رو تعریف کن: اگر تعداد عناصر لیست فرد بود عنصر وسط و اگر زوج بود عدد 0 رو برگردونه.",p:10,
+ code:`def get_middle(lst):
+    if len(lst) % 2 == 1:
+        return lst[len(lst) // 2]
+    else:
+        return 0
+
+print(get_middle([5, 6, 2, 3, 9]))`,
+ out:"2",
+ w:"لیست پنج‌تایی، اندیس وسط <code>5 // 2 = 2</code> هست، یعنی عنصر <code>2</code>. تقسیم صحیح <code>//</code> باعث میشه اندیس عدد صحیح بمونه."},
+
+{t:"با اجرای کد زیر، مقدار <code>c.count</code> چقدر میشه؟",p:3,
+ code:`class Counter:
+    def __init__(self):
+        self.count = 0
+    def add(self):
+        self.count += 1
+
+c = Counter()
+for i in range(5):
+    c.add()`,
+ o:["0","5","1","3"],a:1,
+ w:"حلقه ۵ بار اجرا میشه و هر بار <code>count</code> یکی زیاد میشه."},
+
+{t:"خروجی کد زیر چیه؟",p:5,
+ code:`words = ["ali:20", "reza:18", "sara:19"]
+result = list(map(lambda x: x.split(":")[0].upper(), words))
+print(result)`,
+ o:["[\"ALI\", \"REZA\", \"SARA\"]","[\"19\", \"18\", \"20\"]","[\"ali\", \"reza\", \"sara\"]","هیچ کدام"],a:0,
+ w:"<code>split(\":\")</code> رشته رو به دو بخش می‌شکنه، <code>[0]</code> اسم رو برمی‌داره و <code>upper()</code> حروف بزرگ می‌کنه."},
+
+{t:"در کلاس <code>Lamp</code> متدی به نام <code>switch()</code> تعریف کن که مقدار <code>is_on</code> رو هر بار برعکس کنه.",p:8,
+ code:`class Lamp:
+    def __init__(self):
+        self.is_on = False
+
+    def switch(self):
+        self.is_on = not self.is_on
+
+lamp = Lamp()
+lamp.switch()
+print(lamp.is_on)`,
+ out:"True",
+ w:"عملگر <code>not</code> مقدار بولی رو برعکس می‌کنه، پس بدون نیاز به <code>if</code> کار روشن و خاموش انجام میشه."},
+
+{t:"با <code>pandas</code> فایل <code>reports.csv</code> رو بخون و اطلاعات دانش‌آموزهایی که معدل ۲۰ و غیبت ۰ دارن رو نمایش بده.",p:10,
+ code:`import pandas as pd
+
+df = pd.read_csv("reports.csv")
+result = df[(df["score"] == 20) & (df["absence"] == 0)]
+print(result)`,
+ w:"برای ترکیب چند شرط در pandas از <code>&</code> (و) و <code>|</code> (یا) استفاده میشه و هر شرط باید داخل پرانتز باشه. به‌جای <code>and</code> و <code>or</code> معمولی."}
+];
+
+const app = document.getElementById("app");
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+app.innerHTML = Q.map((q,i)=>{
+  const opts = q.o ? `<ul class="opts">${q.o.map((x,j)=>`<li class="${j===q.a?"ok":""}"><code>${esc(x)}</code></li>`).join("")}</ul>` : "";
+  const code = q.code ? `<pre><code>${esc(q.code)}</code></pre>` : "";
+  const out = q.out ? `<div class="out">خروجی: ${esc(q.out)}</div>` : "";
+  return `<section class="q"><div class="q-head"><div class="num">${i+1}</div><p class="q-text">${q.t}</p><span class="pts">${q.p} نمره</span></div>${code}${opts}${out}<div class="why"><b>نکته:</b> ${q.w}</div></section>`;
+}).join("");
+</script>
+</body>
+</html>
