@@ -1,59 +1,785 @@
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa" dir="rtl" data-level="1">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GLITCH // انتخاب مسیر</title>
+<meta name="theme-color" content="#0a0c12">
+<title>جزوه امتحان | ایران دیجیتال</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
 <style>
-:root{--bg:#050607;--green:#b7ff00;--cyan:#00f5ff;--red:#ff3158;--white:#edf5f4}
+@property --a1{syntax:"<color>";inherits:true;initial-value:#38bdf8}
+@property --a2{syntax:"<color>";inherits:true;initial-value:#6366f1}
+
+:root{
+  color-scheme:dark;
+  --bg:#0a0c12; --ink:#e8ebf4; --muted:#98a0b8; --line:rgba(255,255,255,.09);
+  --a1:#38bdf8; --a2:#6366f1;
+  --ok:#4ade9a; --ok-bg:rgba(74,222,154,.10);
+  --mono:"JetBrains Mono","Fira Code",Consolas,"Courier New",monospace;
+  --r:20px;
+  transition:--a1 .7s ease,--a2 .7s ease;
+}
+html[data-level="2"]{--a1:#c084fc;--a2:#f472b6}
+
 *{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--white);font-family:Tahoma,Arial,sans-serif}
-body{overflow-x:hidden;background:radial-gradient(ellipse at 50% 42%,#101a16 0,#070909 42%,#030404 100%)}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:5;opacity:.13;background:repeating-linear-gradient(0deg,transparent 0 3px,#d5ffe9 4px,transparent 5px);mix-blend-mode:screen}
-.noise{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;opacity:.045;z-index:4;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");animation:noise .2s steps(2) infinite}
-@keyframes noise{0%{transform:translate(0,0)}25%{transform:translate(2%,-1%)}50%{transform:translate(-1%,2%)}75%{transform:translate(1%,1%)}100%{transform:translate(-2%,-1%)}}
-.wrap{min-height:100svh;display:flex;align-items:center;justify-content:center;padding:28px 18px;position:relative}
-.gridbg{position:absolute;inset:0;opacity:.12;background-image:linear-gradient(#00f5ff 1px,transparent 1px),linear-gradient(90deg,#00f5ff 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(ellipse at center,#000 0%,transparent 72%);transform:perspective(500px) rotateX(10deg) scale(1.2)}
-.panel{width:min(760px,100%);position:relative;text-align:center;padding:clamp(28px,7vw,66px) clamp(18px,5vw,48px);border:1px solid #24382f;background:rgba(5,10,9,.82);box-shadow:0 0 0 5px #0a100d,0 0 50px #00f5ff0c,inset 0 0 40px #b7ff0008;clip-path:polygon(0 18px,18px 0,calc(100% - 18px) 0,100% 18px,100% calc(100% - 18px),calc(100% - 18px) 100%,18px 100%,0 calc(100% - 18px))}
-.kicker{font:700 11px/1.6 monospace;letter-spacing:4px;color:var(--green);direction:ltr;margin-bottom:24px}
-h1{font-size:clamp(34px,8vw,70px);line-height:1.15;margin:0 auto 14px;font-weight:900;letter-spacing:-2px;text-shadow:3px 0 var(--red),-3px 0 var(--cyan);animation:glitch 4s infinite;position:relative}
-@keyframes glitch{0%,91%,100%{transform:translate(0);clip-path:none}92%{transform:translate(3px,-1px);clip-path:inset(10% 0 65% 0)}94%{transform:translate(-3px,1px);clip-path:inset(58% 0 18% 0)}96%{transform:translate(1px,0);clip-path:none}}
-.subtitle{color:#8c9b95;font-size:14px;line-height:2;margin:0 auto 38px;max-width:430px}
-.buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;direction:rtl}
-.path{min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-decoration:none;color:var(--white);border:1px solid #35433b;background:#0a100d;padding:22px 12px;position:relative;overflow:hidden;transition:transform .2s,border-color .2s,box-shadow .2s;cursor:pointer}
-.path:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 25%,#b7ff001b 50%,transparent 75%);transform:translateX(-120%);transition:transform .55s}
-.path:hover:before{transform:translateX(120%)}
-.path:hover{transform:translateY(-4px);border-color:var(--green);box-shadow:0 0 22px #b7ff0020}
-.path.advanced:hover{border-color:var(--cyan);box-shadow:0 0 22px #00f5ff20}
-.number{font:12px monospace;color:var(--green);letter-spacing:3px;direction:ltr}.advanced .number{color:var(--cyan)}
-.path strong{font-size:clamp(20px,4vw,27px)}
-.path small{font-size:11px;color:#84918a;letter-spacing:1px;direction:ltr}
-.arrow{font-size:20px;color:var(--green);transition:transform .2s}.advanced .arrow{color:var(--cyan)}.path:hover .arrow{transform:translateX(-5px)}
-.footer{margin-top:32px;display:flex;justify-content:space-between;gap:12px;color:#53635b;font:10px monospace;direction:ltr;letter-spacing:1.5px}.status{color:var(--green)}
-.corner{position:absolute;width:10px;height:10px;border-color:var(--green);border-style:solid}.tl{top:10px;left:10px;border-width:1px 0 0 1px}.tr{top:10px;right:10px;border-width:1px 1px 0 0}.bl{bottom:10px;left:10px;border-width:0 0 1px 1px}.br{bottom:10px;right:10px;border-width:0 1px 1px 0}
-@media(max-width:520px){.buttons{grid-template-columns:1fr}.path{min-height:112px}.footer{font-size:9px}.subtitle{margin-bottom:26px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Vazirmatn,Tahoma,sans-serif;line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(60% 45% at 88% -8%,color-mix(in srgb,var(--a1) 26%,transparent),transparent 70%),
+    radial-gradient(50% 40% at 4% 8%,color-mix(in srgb,var(--a2) 22%,transparent),transparent 70%),
+    radial-gradient(40% 30% at 50% 110%,color-mix(in srgb,var(--a2) 14%,transparent),transparent 70%);
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(70% 50% at 50% 0%,#000,transparent 80%);
+  mask-image:radial-gradient(70% 50% at 50% 0%,#000,transparent 80%);
+}
+
+/* ---------- top bar ---------- */
+.top{
+  position:sticky;top:0;z-index:50;
+  background:rgba(10,12,18,.72);
+  -webkit-backdrop-filter:saturate(1.4) blur(16px);backdrop-filter:saturate(1.4) blur(16px);
+  border-bottom:1px solid var(--line);
+}
+.top-in{max-width:820px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:.95rem;white-space:nowrap}
+.logo{
+  width:34px;height:34px;border-radius:11px;display:grid;place-items:center;
+  font-family:var(--mono);font-weight:800;font-size:.8rem;color:#0b0d14;
+  background:linear-gradient(135deg,var(--a1),var(--a2));
+  box-shadow:0 6px 20px -6px var(--a1);
+}
+.progress{height:2px;background:transparent}
+.progress i{display:block;height:100%;width:100%;transform-origin:right;transform:scaleX(0);background:linear-gradient(90deg,var(--a2),var(--a1))}
+
+/* ---------- level lever ---------- */
+.switch{
+  position:relative;display:grid;grid-template-columns:1fr 1fr;
+  width:min(300px,100%);padding:4px;border-radius:999px;
+  background:rgba(255,255,255,.05);border:1px solid var(--line);
+  box-shadow:inset 0 1px 6px rgba(0,0,0,.4);
+}
+.thumb{
+  position:absolute;top:4px;bottom:4px;right:4px;width:calc(50% - 4px);border-radius:999px;
+  background:linear-gradient(135deg,var(--a1),var(--a2));
+  box-shadow:0 6px 22px -4px color-mix(in srgb,var(--a1) 70%,transparent),inset 0 1px 0 rgba(255,255,255,.35);
+  transition:transform .55s cubic-bezier(.5,1.5,.4,1);
+}
+.switch[data-level="2"] .thumb{transform:translateX(-100%)}
+.switch button{
+  position:relative;z-index:1;appearance:none;border:0;background:none;cursor:pointer;
+  font:inherit;color:var(--muted);padding:5px 8px;border-radius:999px;line-height:1.35;
+  display:flex;flex-direction:column;align-items:center;transition:color .3s;
+}
+.switch button b{font-size:.88rem;font-weight:700}
+.switch button small{font-size:.68rem;opacity:.85}
+.switch button[aria-selected="true"]{color:#0b0d14}
+.switch button:not([aria-selected="true"]):hover{color:var(--ink)}
+.switch button:focus-visible{outline:2px solid var(--a1);outline-offset:2px}
+
+/* ---------- hero ---------- */
+main{max-width:820px;margin:0 auto;padding:0 16px 40px;overflow-x:clip}
+.hero{padding:44px 4px 18px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;padding:3px 12px;border-radius:999px;
+  font-size:.78rem;color:var(--a1);border:1px solid color-mix(in srgb,var(--a1) 35%,transparent);
+  background:color-mix(in srgb,var(--a1) 10%,transparent);
+}
+.eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--a1);box-shadow:0 0 10px var(--a1)}
+.hero h1{
+  margin:14px 0 6px;font-size:clamp(1.8rem,5.5vw,2.7rem);line-height:1.35;font-weight:800;
+  background:linear-gradient(120deg,#fff 20%,color-mix(in srgb,var(--a1) 80%,#fff) 60%,var(--a2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p{margin:0;color:var(--muted);max-width:56ch}
+.stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.stat{
+  display:flex;align-items:baseline;gap:8px;padding:8px 16px;border-radius:14px;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);
+}
+.stat b{font-size:1.25rem;font-weight:800;color:#fff}
+.stat span{font-size:.8rem;color:var(--muted)}
+
+/* ---------- question cards ---------- */
+#list{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;margin-top:10px}
+.q{
+  position:relative;min-width:0;padding:20px;border-radius:var(--r);
+  background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.02));
+  border:1px solid var(--line);
+  box-shadow:0 20px 40px -24px rgba(0,0,0,.8);
+  transition:border-color .3s,transform .3s,box-shadow .3s;
+}
+.q:hover{border-color:color-mix(in srgb,var(--a1) 40%,transparent);transform:translateY(-2px);box-shadow:0 24px 50px -22px color-mix(in srgb,var(--a1) 30%,#000)}
+.q-head{display:flex;gap:12px;align-items:flex-start}
+.num{
+  flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+  font-weight:800;font-size:.95rem;color:#0b0d14;
+  background:linear-gradient(135deg,var(--a1),var(--a2));
+  box-shadow:0 8px 20px -8px var(--a1);
+}
+.q-text{flex:1;min-width:0;margin:0;font-weight:500;padding-top:3px}
+.pts{
+  flex:none;margin-top:5px;padding:1px 10px;border-radius:999px;font-size:.74rem;white-space:nowrap;
+  color:var(--muted);border:1px solid var(--line);background:rgba(255,255,255,.04);
+}
+
+code{font-family:var(--mono);direction:ltr;unicode-bidi:embed}
+.q-text code,.why code{
+  background:rgba(255,255,255,.08);padding:1px 7px;border-radius:6px;font-size:.84em;
+  border:1px solid rgba(255,255,255,.06);
+}
+
+/* code block */
+.code{margin:16px 0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#080a11;direction:ltr}
+.code-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:7px 10px 7px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid var(--line);
+}
+.dots{display:flex;gap:6px}
+.dots i{width:10px;height:10px;border-radius:50%;background:#ff5f57}
+.dots i:nth-child(2){background:#febc2e}
+.dots i:nth-child(3){background:#28c840}
+.lang{margin-right:auto;margin-left:12px;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
+.lang em{font-style:normal;margin-left:8px;padding:0 8px;border-radius:999px;font-family:Vazirmatn,sans-serif;font-size:.72rem;color:var(--ok);background:var(--ok-bg)}
+.copy{
+  display:inline-flex;align-items:center;gap:6px;appearance:none;cursor:pointer;
+  font:inherit;font-size:.76rem;line-height:1.7;padding:2px 12px;border-radius:8px;
+  color:var(--ink);background:rgba(255,255,255,.06);border:1px solid var(--line);
+  transition:background .2s,border-color .2s,color .2s;
+}
+.copy svg{width:14px;height:14px}
+.copy:hover{background:rgba(255,255,255,.12);border-color:color-mix(in srgb,var(--a1) 50%,transparent)}
+.copy.done{color:var(--ok);border-color:var(--ok);background:var(--ok-bg)}
+pre{
+  margin:0;padding:14px 16px;overflow-x:auto;direction:ltr;text-align:left;
+  font-size:.86rem;line-height:1.7;color:#d6dbea;
+}
+pre:focus-visible{outline:2px solid var(--a1);outline-offset:-2px}
+.t-com{color:#667090;font-style:italic}
+.t-str{color:#a6e07a}
+.t-num{color:#ffa07a}
+.t-kw{color:#c792ea}
+.t-bi{color:#7fdbca}
+.t-fn{color:#82aaff}
+::selection{background:color-mix(in srgb,var(--a1) 45%,transparent)}
+
+/* options */
+.opts{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+.opt{
+  display:flex;align-items:center;gap:12px;padding:8px 12px;border-radius:12px;
+  background:rgba(255,255,255,.03);border:1px solid var(--line);color:#c4cadb;
+}
+.opt .ltr{
+  flex:none;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;
+  font-size:.75rem;font-weight:700;color:var(--muted);background:rgba(255,255,255,.06);
+}
+.opt code{flex:0 1 auto;min-width:0;font-size:.86rem;text-align:left;overflow-wrap:anywhere}
+.opt.ok{
+  color:var(--ok);font-weight:600;border-color:color-mix(in srgb,var(--ok) 55%,transparent);
+  background:linear-gradient(90deg,var(--ok-bg),rgba(74,222,154,.03));
+  box-shadow:0 0 0 1px rgba(74,222,154,.08),0 10px 28px -16px var(--ok);
+}
+.opt.ok .ltr{background:var(--ok);color:#06231a}
+.ok-tag{flex:none;margin-inline-start:auto;font-size:.72rem;padding:0 10px;border-radius:999px;color:#06231a;background:var(--ok);font-weight:700}
+
+/* output + note */
+.out{margin-top:12px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#080a11;direction:ltr}
+.out-h{padding:3px 14px;font-size:.7rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.04);border-bottom:1px solid var(--line);font-family:var(--mono)}
+.out-b{padding:9px 14px;font-family:var(--mono);font-size:.86rem;color:#f4f7ff;white-space:pre-wrap;word-break:break-word}
+.out-b::before{content:"› ";color:var(--ok)}
+.why{
+  display:flex;gap:12px;margin-top:14px;padding:12px 14px;border-radius:14px;font-size:.92rem;color:#cdd3e4;
+  background:linear-gradient(90deg,color-mix(in srgb,var(--a1) 13%,transparent),color-mix(in srgb,var(--a2) 5%,transparent));
+  border:1px solid color-mix(in srgb,var(--a1) 22%,transparent);
+}
+.why svg{flex:none;width:20px;height:20px;margin-top:5px;color:var(--a1)}
+.why b{color:var(--a1)}
+
+/* next level + footer */
+.next{display:flex;justify-content:center;margin-top:30px}
+.next button{
+  appearance:none;cursor:pointer;font:inherit;font-weight:700;color:#0b0d14;
+  padding:12px 26px;border-radius:999px;border:0;
+  background:linear-gradient(135deg,var(--a1),var(--a2));
+  box-shadow:0 14px 34px -12px var(--a1);transition:transform .25s,box-shadow .25s;
+}
+.next button:hover{transform:translateY(-3px);box-shadow:0 20px 40px -12px var(--a1)}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:10px 16px 50px}
+
+/* motion */
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.enter .hero>*,.enter .q,.enter .next{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.enter .hero>*:nth-child(2){animation-delay:.05s}
+.enter .hero>*:nth-child(3){animation-delay:.1s}
+.enter .hero>*:nth-child(4){animation-delay:.15s}
+.enter .q{animation-delay:calc(var(--i,0)*45ms + .15s)}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+
+@media (max-width:560px){
+  .brand span:last-child{display:none}
+  .top-in{padding:10px 12px}
+  .switch{width:100%}
+  .q{padding:16px}
+  .hero{padding-top:30px}
+  .q-head{flex-wrap:wrap}
+  .pts{order:3;margin-right:50px;margin-top:-4px}
+}
+
+@media print{
+  body{background:#fff;color:#000}
+  body::before,body::after,.top,.next,.copy,.dots{display:none}
+  .q{break-inside:avoid;background:#fff;border-color:#bbb;box-shadow:none}
+  .hero h1{color:#111;background:none}
+  .code,.out{background:#f3f4f8}
+  pre,.out-b,.opt,.why,.q-text{color:#111}
+  .t-com,.t-str,.t-num,.t-kw,.t-bi,.t-fn{color:#111}
+}
 </style>
 </head>
 <body>
-<div class="noise"></div>
-<main class="wrap">
-  <div class="gridbg"></div>
-  <section class="panel" aria-label="انتخاب سطح">
-    <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-    <div class="kicker">SYSTEM ACCESS // 02 PATHS</div>
-    <h1>انتخاب مسیر</h1>
-    <p class="subtitle">سطح موردنظرت رو انتخاب کن و وارد شو.<br>یک مسیر برای شروع؛ یک مسیر برای حرفه‌ای‌ها.</p>
-    <div class="buttons">
-      <a class="path" href="https://say4s.github.io/iranD/jozve-intro-exam.html" target="_blank" rel="noopener noreferrer" aria-label="ورود به سایت مقدماتی">
-        <span class="number">LEVEL_01</span><strong>مقدماتی</strong><small>START FROM ZERO</small><span class="arrow">←</span>
-      </a>
-      <a class="path advanced" href="https://say4s.github.io/iranD/jozve-final-exam.html" target="_blank" rel="noopener noreferrer" aria-label="ورود به سایت پیشرفته">
-        <span class="number">LEVEL_02</span><strong>پیشرفته</strong><small>GO BEYOND LIMITS</small><span class="arrow">←</span>
-      </a>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><span class="logo">ID</span><span>ایران دیجیتال</span></div>
+    <div class="switch" id="switch" role="tablist" aria-label="انتخاب سطح" data-level="1">
+      <span class="thumb" aria-hidden="true"></span>
+      <button type="button" role="tab" data-lv="1" aria-selected="true"><b>سطح ۱</b><small>مقدماتی</small></button>
+      <button type="button" role="tab" data-lv="2" aria-selected="false"><b>سطح ۲</b><small>نهایی</small></button>
     </div>
-    <div class="footer"><span>GLITCH_PORTAL v1.0</span><span class="status">● SYSTEM ONLINE</span></div>
-  </section>
-</main>
+  </div>
+  <div class="progress"><i id="bar"></i></div>
+</header>
+
+<main id="app"></main>
+<footer>این جزوه برای مرور شخصی ساخته شده است.</footer>
+
+<script>
+/* ========== داده‌ی سوال‌ها ========== */
+const Q1 = [
+{t:"کدوم یک از گزینه‌های زیر، تعداد عناصر لیست <code>[1, 2, 3, 4, 5]</code> رو به درستی محاسبه می‌کنه؟",p:3,
+ o:["length([1, 2, 3, 4, 5])","items([1, 2, 3, 4, 5])","len([1, 2, 3, 4, 5])","itm([1, 2, 3, 4, 5])"],a:2,
+ w:"تابع داخلی پایتون برای شمردن عناصر <code>len()</code> هست و روی لیست، رشته، دیکشنری و تاپل کار می‌کنه."},
+
+{t:"دستور <code>print</code> نوشته شده در کد زیر چند بار اجرا میشه؟",p:5,
+ code:`for i in range(10):
+    for j in range(10):
+        for k in range(5):
+            print("Hello World")`,
+ o:["1000","5000","100","500"],a:3,
+ w:"در حلقه‌های تو در تو، تعداد اجرا برابر حاصل‌ضرب تکرارهاست: <code>10 × 10 × 5 = 500</code>."},
+
+{t:"با اجرا کردن کد زیر چه چیزی در خروجی چاپ میشه؟",p:3,
+ code:`counter = 1
+
+while counter <= 10:
+    print(1)
+    counter -= 1
+else:
+    print("done")`,
+ o:["اعداد 1 تا 10 و در آخر رشته done در خروجی چاپ میشن.","اعداد 10 تا 1 و در آخر رشته done در خروجی چاپ میشن.","کد خطا داره و اصلاً اجرا نمیشه.","حلقه بی‌نهایته و تا ابد 1 در خروجی چاپ میشه."],a:3,
+ w:"به‌جای <code>+= 1</code> نوشته شده <code>-= 1</code>، پس <code>counter</code> هر بار کمتر میشه و شرط <code>counter &lt;= 10</code> همیشه درست می‌مونه. حلقه هیچ‌وقت تموم نمیشه و <code>else</code> هم اجرا نمیشه."},
+
+{t:"برنامه‌ی پیشنهاد نام کاربری: نام و سن رو بگیر و با <code>_</code> بینشون و <code>!</code> در آخر، نام کاربری بساز و چاپ کن. (مثلاً <code>\"nina_24!\"</code>)",p:6,
+ code:`name = input("نام: ")
+age = input("سن: ")
+
+username = name + "_" + age + "!"
+
+print(username)`,
+ w:"خروجی <code>input()</code> همیشه رشته‌ست، پس نیازی به تبدیل <code>age</code> به عدد نیست و با <code>+</code> مستقیم می‌چسبه. اگه می‌خواستی عدد باشه، باید با <code>str()</code> تبدیلش می‌کردی."},
+
+{t:"کدوم یک از گزینه‌های زیر برای حذف کردن یک عنصر از دیکشنری استفاده <b>نمیشه</b>؟",p:3,
+ o:["del","pop","popitem","remove"],a:3,
+ w:"دیکشنری متد <code>remove</code> نداره. روش‌های درست: <code>del d[key]</code>، <code>d.pop(key)</code> و <code>d.popitem()</code> (آخرین عنصر رو حذف می‌کنه). <code>remove</code> مخصوص لیست‌هاست."},
+
+{t:"با توجه به دیکشنری زیر، اجرای کدوم قطعه کد با مشکل مواجه میشه؟",p:4,
+ code:`user_data = {
+  "user_name": "dracula",
+  "password": "secret",
+  "email": "dracula@count.com"
+}`,
+ o:["print(user_data[\"email\"])","if \"exp\" in user_data:\n    print(user_data[\"exp\"])","print(user_data.get(\"country\"))","if \"exp\" not in user_data:\n    print(user_data[\"exp\"])"],a:3,
+ w:"کلید <code>\"exp\"</code> در دیکشنری وجود نداره. توی گزینه‌ی درست شرط <code>not in</code> باعث میشه دقیقاً وقتی کلید نیست بخوایم بهش دسترسی داشته باشیم و خطای <code>KeyError</code> بده. متد <code>get()</code> برای کلید ناموجود فقط <code>None</code> برمی‌گردونه و خطا نمیده."},
+
+{t:"حلقه <code>for</code> در کد زیر چند بار اجرا میشه؟",p:3,
+ code:`for i in range(100, 0, -20):
+    print("")`,
+ o:["10","5","120","100"],a:1,
+ w:"<code>range(100, 0, -20)</code> مقدارهای 100، 80، 60، 40، 20 رو تولید می‌کنه و قبل از رسیدن به 0 تموم میشه. پس ۵ بار."},
+
+{t:"از لیست شماره‌سریال‌ها با پیمایش، همه‌ی عناصر <code>\"NA\"</code> رو حذف کن و لیست رو چاپ کن.",p:8,
+ code:`serial_numbers = [
+    "A1023", "NA", "B2345", "C3920", "NA",
+    "D4832", "E5839", "NA", "F6740", "G7501",
+    "NA", "H8293", "I9021", "NA", "J0392"
+]
+
+for serial_number in serial_numbers:
+    if serial_number == "NA":
+        serial_numbers.remove("NA")
+
+print(serial_numbers)`,
+ out:"['A1023', 'B2345', 'C3920', 'D4832', 'E5839', 'F6740', 'G7501', 'H8293', 'I9021', 'J0392']",
+ w:"این کد روی این داده درست جواب میده چون «NA»ها کنار هم نیستن. ولی حذف عنصر از لیست در حین پیمایش همون لیست خطرناکه و ممکنه عناصر رو جا بندازه (مثلاً دو <code>\"NA\"</code> پشت سر هم). روش امن‌تر: <code>serial_numbers = [s for s in serial_numbers if s != \"NA\"]</code> یا پیمایش روی کپی با <code>serial_numbers[:]</code>."},
+
+{t:"کدوم یک از گزینه‌های زیر یک نام‌گذاری رایج‌تر برای اسم یک متغیره؟",p:3,
+ o:["variable_name","VariableName","variableName","VARIABLE-NAME"],a:0,
+ w:"در پایتون استاندارد (PEP 8) از <code>snake_case</code> یعنی حروف کوچک با زیرخط استفاده میشه. <code>VariableName</code> برای کلاس‌ها و <code>VARIABLE_NAME</code> برای ثابت‌هاست. خط تیره هم در اسم متغیر مجاز نیست."},
+
+{t:"کد زیر بر اساس سن و قد چک می‌کنه که فرد می‌تونه سوار ترن هوایی بشه یا نه. خروجی کدوم گزینه‌ست؟",p:4,
+ code:`height = 165
+age = 18
+
+if age > 12:
+    if height > 170:
+        print("از سواری لذت ببر")
+    elif height > 160:
+        print("با یک همراه می‌تونی سوار شی")
+    else:
+        print("باید یکم قدت بلندتر بشه تا بتونی سوار شی")
+else:
+    print("باید یکم سنت بیشتر شه تا بتونی سوار شی")`,
+ o:["از سواری لذت ببر","با یک همراه می‌تونی سوار شی","باید یکم قدت بلندتر بشه تا بتونی سوار شی","باید یکم سنت بیشتر شه تا بتونی سوار شی"],a:1,
+ w:"سن 18 بزرگ‌تر از 12 هست، پس وارد شرط اول میشیم. قد 165 بزرگ‌تر از 170 نیست ولی بزرگ‌تر از 160 هست، پس شاخه‌ی <code>elif</code> اجرا میشه."},
+
+{t:"خروجی کدوم گزینه با بقیه‌ی گزینه‌ها فرق داره؟",p:3,
+ o:["True and True","False or True","not True","not False"],a:2,
+ w:"<code>True and True</code> میشه <code>True</code>، <code>False or True</code> میشه <code>True</code>، <code>not False</code> میشه <code>True</code> ولی <code>not True</code> میشه <code>False</code>."},
+
+{t:"کدی بنویس که همه‌ی اعداد 1 تا 100 رو چاپ کنه، اما اعدادی که بر 4 بخش‌پذیرن رو <b>چاپ نکنه</b>.",p:8,
+ code:`for i in range(1, 101):
+    if i % 4 != 0:
+        print(i)`,
+ w:"<code>range(1, 101)</code> تا 100 می‌ره (عدد آخر شامل نمیشه). عملگر <code>%</code> باقی‌مانده رو میده و اگه باقی‌مانده‌ی تقسیم بر 4 صفر نباشه، یعنی بخش‌پذیر نیست."},
+
+{t:"خروجی کد زیر در کدوم گزینه آورده شده؟",p:5,
+ code:`list_1 = [5, 6, 3, 88]
+list_2 = [5, 6, 88, 3]
+flag = ""
+
+for i in range(len(list_1)):
+    if list_1[i] == list_2[i]:
+        flag += "1"
+    else:
+        break
+
+print(flag)`,
+ o:["1","11","111","1111"],a:1,
+ w:"اندیس‌های 0 و 1 مقدار برابر دارن (5 و 6) پس دو بار <code>\"1\"</code> اضافه میشه. در اندیس 2 مقدارها 3 و 88 هستن و برابر نیستن، پس <code>break</code> حلقه رو قطع می‌کنه. نتیجه <code>\"11\"</code>."},
+
+{t:"برای کامنت کردن یک خط از کد، از کدوم کاراکتر استفاده میشه؟",p:3,
+ o:["//","*/","#","--"],a:2,
+ w:"در پایتون کامنت تک‌خطی با <code>#</code> شروع میشه. <code>//</code> در پایتون عملگر تقسیم صحیحه."},
+
+{t:"تفاوت بین تاپل‌ها و لیست‌ها در چیه؟",p:4,
+ o:["هیچ تفاوتی ندارن.","از تاپل‌ها برای ذخیره مقادیر عددی استفاده میشه ولی از لیست‌ها نه.","لیست‌ها تغییرپذیر نیستن اما تاپل‌ها هستن.","تاپل‌ها تغییرپذیر نیستن اما لیست‌ها هستن."],a:3,
+ w:"تاپل (<code>(1, 2, 3)</code>) تغییرناپذیره (immutable) و بعد از ساخت نمیشه عناصرش رو عوض کرد. لیست (<code>[1, 2, 3]</code>) تغییرپذیره (mutable)."},
+
+{t:"دیکشنری <code>frequency</code> رو تعریف کن که کلیدهاش عناصر لیست <code>chars</code> و مقدار هر کلید، تعداد تکرار اون کاراکتر باشه. باید روی لیست پیمایش کنی.",p:9,
+ code:`chars = ['a', 'b', 'a', 'c', 'd', 'e', 'b',
+         'a', 'e', 'f', 'g', 'd', 'h', 'e', 'f']
+
+frequency = {}
+for char in chars:
+    if char not in frequency:
+        frequency.update({char: chars.count(char)})
+
+print(frequency)`,
+ out:"{'a': 3, 'b': 2, 'c': 1, 'd': 2, 'e': 3, 'f': 2, 'g': 1, 'h': 1}",
+ w:"با شرط <code>char not in frequency</code> هر کاراکتر فقط یک بار ثبت میشه و <code>chars.count(char)</code> تعداد تکرارش رو میده. روش رایج دیگه: <code>frequency[char] = frequency.get(char, 0) + 1</code>."},
+
+{t:"برای اینکه رشته‌ی <code>\"iterator\"</code> در متغیر <code>word</code> رو به <code>\"iferafor\"</code> تبدیل کنیم، از چه روشی استفاده کنیم؟",p:3,
+ o:["word.replace(\"f\", \"t\")","word.replace(\"f\", \"r\")","word.replace(\"t\", \"f\")","word.replace(\"t\", \"r\")"],a:2,
+ w:"<code>replace(قدیمی, جدید)</code> همه‌ی «t»ها رو با «f» عوض می‌کنه: <code>iterator ← iferafor</code>. توجه کن که <code>replace</code> رشته‌ی جدید برمی‌گردونه و رشته‌ی اصلی تغییر نمی‌کنه (رشته‌ها تغییرناپذیرن)."},
+
+{t:"کدوم جمله راجع به رشته‌ها در پایتون غلطه؟",p:4,
+ o:["رشته‌ها دنباله‌ای از کاراکترها هستن که داخل علامت نقل قول قرار می‌گیرن.","می‌تونیم با استفاده از عملگر + دو رشته رو به هم بچسبونیم.","یک رشته رو نمیشه به صورت مستقیم به یک مقدار با نوع int چسبوند.","هیچ کدام"],a:3,
+ w:"هر سه جمله درسته. مورد سوم هم درسته: <code>\"a\" + 5</code> خطای <code>TypeError</code> میده و باید اول <code>str(5)</code> کنی. پس هیچ‌کدوم غلط نیست."},
+
+{t:"۲۰ داده‌ی دمای حسگر داری. میانگین داده‌های بالاتر از 73.5 رو منهای میانگین داده‌های کوچک‌تر یا مساوی 73.5 کن و بدون رند کردن چاپ کن.",p:10,
+ code:`temperatures = [
+    72.38, 72.83, 73.12, 73.61, 72.97,
+    73.74, 73.00, 72.56, 73.43, 72.11,
+    73.98, 72.04, 72.64, 73.35, 73.89,
+    72.20, 73.50, 72.41, 73.29, 72.78
+]
+greater_73_5 = []
+less_equal_73_5 = []
+for temperature in temperatures:
+    if temperature > 73.5:
+        greater_73_5.append(temperature)
+    else:
+        less_equal_73_5.append(temperature)
+
+avg_greater = sum(greater_73_5) / len(greater_73_5)
+avg_less_equal = sum(less_equal_73_5) / len(less_equal_73_5)
+
+print(avg_greater - avg_less_equal)`,
+ out:"1.0168749999999989",
+ w:"داده‌ها در دو لیست جدا میشن (به <code>73.50</code> دقت کن که به لیست «کوچک‌تر یا مساوی» میره). میانگین هر لیست با <code>sum / len</code> حساب میشه. خروجی طولانی به خاطر خطای ذاتی اعداد اعشاری در کامپیوتره و رند نکردن خواسته‌ی سوال بوده."},
+
+{t:"نمرات دانش‌آموز در دیکشنری <code>scores</code> ذخیره شده. با پیمایش روی دیکشنری معدل رو حساب و چاپ کن.",p:9,
+ code:`scores = {
+    "Math": 95,
+    "Physics": 80,
+    "Chemistry": 86,
+    "Geometry": 98,
+    "Algebra": 93
+}
+summation = 0
+for score in scores:
+    summation += scores[score]
+avg = summation / len(scores)
+
+print(avg)`,
+ out:"90.4",
+ w:"پیمایش مستقیم روی دیکشنری، کلیدها رو میده و با <code>scores[score]</code> به مقدار هر کلید می‌رسیم. مجموع ۴۵۲ تقسیم بر ۵ درس میشه ۹۰.۴. راه کوتاه‌تر: <code>sum(scores.values()) / len(scores)</code>."}
+];
+const Q2 = [
+{t:"خروجی کد زیر کدوم گزینه‌ست؟",p:3,
+ code:`def format_name(first, last="Smith", title="Mr."):
+    return f"{title} {first} {last}"
+
+print(format_name("John", title="Dr."))`,
+ o:["Dr. John Smith","Mr. John Smith","Dr. John","John Smith"],a:0,
+ w:"آرگومان <code>title</code> با نام داده شده و <code>Dr.</code> جای مقدار پیش‌فرض رو می‌گیره. <code>last</code> هم چون ارسال نشده، همون <code>\"Smith\"</code> می‌مونه."},
+
+{t:"با اجرای کد زیر، چه رشته‌ای در خروجی نمایش داده میشه؟",p:5,
+ code:`class Animal:
+    def __init__(self, name):
+        self.name = name
+    def speak(self):
+        return self.name + " makes a sound"
+
+class Dog(Animal):
+    def speak(self):
+        return self.name + " barks"
+
+d = Dog("Rex")
+print(d.speak())`,
+ o:["Rex makes a sound","Rex barks","Dog barks","Dog makes a sound"],a:1,
+ w:"کلاس <code>Dog</code> متد <code>speak</code> رو بازنویسی (override) کرده، پس نسخه‌ی خودش اجرا میشه. <code>__init__</code> از <code>Animal</code> ارث برده میشه و <code>name</code> رو <code>\"Rex\"</code> می‌کنه."},
+
+{t:"کدوم گزینه راجع به توابع ماژول <code>math</code> درسته؟",p:3,
+ o:["تابع math.pow(3) فقط یک ورودی می‌گیره و خطا نمی‌ده.","تابع math.sqrt(16) مقدار \"4\" (رشته) رو برمی‌گردونه.","تابع math.sqrt(9) مقدار 4 رو برمی‌گردونه.","تابع math.pow(2, 3) مقدار 8.0 رو برمی‌گردونه."],a:3,
+ w:"<code>math.pow</code> دو ورودی می‌خواد و همیشه عدد اعشاری (float) برمی‌گردونه. <code>math.sqrt</code> هم عدد اعشاری میده: <code>sqrt(16) = 4.0</code> و <code>sqrt(9) = 3.0</code>."},
+
+{t:"کد زیر قراره از فایل <code>names.txt</code> فقط اولین خط رو بخونه و در <code>first_line</code> ذخیره کنه. خط اشتباه یا ناقص رو درست کن و مطمئن شو فایل بسته میشه.",p:6,
+ code:`with open("names.txt", "r") as file:
+    first_line = file.readline()
+
+print(first_line)`,
+ w:"<code>readline()</code> فقط یک خط می‌خونه (<code>read()</code> کل فایل و <code>readlines()</code> همه‌ی خط‌ها رو میده). ساختار <code>with</code> بعد از پایان بلوک، فایل رو خودکار می‌بنده و نیازی به <code>close()</code> نیست."},
+
+{t:"خروجی کد زیر در کدوم گزینه نمایش داده شده؟",p:4,
+ code:`try:
+    a = "5"
+    b = int(a) + int("x")
+    print(b)
+except ValueError:
+    print("Error happened")`,
+ o:["5x","10","Error happened","خروجی نداره."],a:2,
+ w:"تبدیل <code>int(\"x\")</code> خطای <code>ValueError</code> میده، قبل از اینکه <code>print(b)</code> اجرا بشه. اجرا میره سراغ <code>except</code> و پیام چاپ میشه."},
+
+{t:"کد زیر چه تغییری در داده‌ها ایجاد می‌کنه؟ (فایل <code>scores.csv</code> ستون‌های <code>name</code> و <code>score</code> داره)",p:4,
+ code:`import pandas as pd
+df = pd.read_csv("scores.csv")
+df.loc[df["score"] < 10, "score"] += 1`,
+ o:["نمره همه‌ی دانش‌آموزها ۱ نمره بیشتر می‌شه.","فقط سطرهایی که نمره بیشتر از ۱۰ دارن حذف می‌شن.","به نمره دانش‌آموزهایی که کمتر از ۱۰ گرفتن، ۱ نمره اضافه می‌شه.","یک ستون جدید به اسم score با مقدار اولیه 1 ساخته میشه."],a:2,
+ w:"الگوی <code>df.loc[شرط, \"ستون\"]</code> یعنی «فقط روی سطرهایی که شرط برقراره، این ستون رو تغییر بده»."},
+
+{t:"تابع زیر چی کار می‌کنه؟",p:4,
+ code:`import datetime as dt
+
+def get_interval(date):
+    return dt.date.today() - date`,
+ o:["تعداد روزهایی که از تاریخ داده‌شده تا امروز گذشته رو حساب می‌کنه.","تاریخ امروز رو به تاریخ ورودی تبدیل می‌کنه.","عدد روز تاریخ ورودی رو جدا می‌کنه.","اختلاف ساعت بین زمان فعلی و زمان ورودی رو برمی‌گردونه."],a:0,
+ w:"کم کردن دو تاریخ، یک شیء <code>timedelta</code> میده که تعداد روزها رو نشون میده."},
+
+{t:"با <code>pandas</code> فایل <code>students.csv</code> رو بخون و میانگین ستون <code>age</code> رو در متغیر <code>average</code> ذخیره کن.",p:8,
+ code:`import pandas as pd
+
+df = pd.read_csv("students.csv")
+average = df["age"].mean()
+print(average)`,
+ w:"هر ستون دیتافریم یک <code>Series</code> هست و متدهایی مثل <code>mean()</code>، <code>sum()</code>، <code>max()</code> و <code>min()</code> داره."},
+
+{t:"با اجرای کد زیر، کدوم عنصر لیست در خروجی چاپ میشه؟",p:3,
+ code:`chars = ['P', 'y', 't', 'h', 'o', 'n']
+print(chars[-3])`,
+ o:["y","o","p","h"],a:3,
+ w:"اندیس منفی از انتها شمرده میشه: <code>-1</code> یعنی <code>'n'</code>، <code>-2</code> یعنی <code>'o'</code> و <code>-3</code> یعنی <code>'h'</code>."},
+
+{t:"خروجی کد زیر چیه؟",p:4,
+ code:`import datetime as dt
+
+d1 = dt.datetime(2024, 5, 1)
+d2 = dt.datetime(2024, 5, 10)
+diff = d2 - d1
+print(diff.days)`,
+ o:["0","9","8","7"],a:1,
+ w:"اختلاف ۱۰ ام و ۱ ام می‌شه ۹ روز. ویژگی <code>.days</code> تعداد روزهای <code>timedelta</code> رو میده."},
+
+{t:"کدوم بخش از برنامه زیر، نمودار رو نمایش میده؟",p:3,
+ code:`import pygal
+chart = pygal.Bar()
+chart.title = "Scores"
+chart.add("A", 10)
+chart.add("B", 15)
+chart.render()`,
+ o:["pygal.Bar()","chart.title = \"Scores\"","chart.add(\"A\", 10)","chart.render()"],a:3,
+ w:"بقیه‌ی خط‌ها نمودار رو می‌سازن و داده می‌دن، ولی خروجی نهایی با <code>render()</code> تولید میشه."},
+
+{t:"متد سازنده‌ی کلاس <code>Alarm</code> رو طوری پیاده‌سازی کن که هر شیء ویژگی‌های <code>time</code> و <code>message</code> داشته باشه.",p:8,
+ code:`class Alarm:
+    def __init__(self, time, message):
+        self.time = time
+        self.message = message
+
+a = Alarm("07:30", "Wake up!")
+print(a.time, a.message)`,
+ w:"نام ورودی‌های <code>__init__</code> باید با ویژگی‌ها یکی باشه و هر کدوم با <code>self.</code> ذخیره بشه."},
+
+{t:"کدوم گزینه به عدد 5 در آرایه‌ی زیر دسترسی پیدا می‌کنه؟",p:3,
+ code:`import numpy as np
+a = np.array([[1, 2, 3],
+              [4, 5, 6],
+              [7, 8, 9]])`,
+ o:["a[1, 1]","a[2, 2]","a[0, 0]","a[1,2]"],a:0,
+ w:"فرمت <code>a[سطر, ستون]</code> از صفر شروع میشه. عدد 5 در سطر دوم (اندیس ۱) و ستون دوم (اندیس ۱) هست."},
+
+{t:"با اجرای کد زیر، کدوم گزینه مقدار <code>result</code> رو به درستی نمایش میده؟",p:3,
+ code:`nums = [5, 10, 15, 20]
+result = list(filter(lambda x: x > 10, nums))`,
+ o:["[5, 10]","[20, 15]","[10, 15, 20]","[5, 10, 15, 20]"],a:1,
+ w:"<code>filter</code> فقط عناصری که شرط <code>x > 10</code> رو دارن نگه می‌داره، یعنی ۱۵ و ۲۰ با همین ترتیب. نتیجه‌ی واقعی <code>[15, 20]</code> هست و در بین گزینه‌ها نزدیک‌ترینش همونیه که روی صفحه‌ی ذخیره‌شده به شکل <code>[20, 15]</code> دیده میشه (احتمالاً بخاطر راست‌به‌چین بودن صفحه، ترتیب جابه‌جا نمایش داده شده)."},
+
+{t:"متد <code>describe()</code> چه اطلاعاتی از دیتافریم رو نمایش می‌ده؟",p:3,
+ o:["کمترین مقدار هر ستون","بیشترین مقدار هر ستون","مقدار میانگین هر ستون","همه موارد"],a:3,
+ w:"<code>describe()</code> یک خلاصه‌ی آماری میده: تعداد، میانگین، انحراف معیار، کمترین، چارک‌ها و بیشترین."},
+
+{t:"تابع <code>get_middle()</code> رو تعریف کن: اگر تعداد عناصر لیست فرد بود عنصر وسط و اگر زوج بود عدد 0 رو برگردونه.",p:10,
+ code:`def get_middle(lst):
+    if len(lst) % 2 == 1:
+        return lst[len(lst) // 2]
+    else:
+        return 0
+
+print(get_middle([5, 6, 2, 3, 9]))`,
+ out:"2",
+ w:"لیست پنج‌تایی، اندیس وسط <code>5 // 2 = 2</code> هست، یعنی عنصر <code>2</code>. تقسیم صحیح <code>//</code> باعث میشه اندیس عدد صحیح بمونه."},
+
+{t:"با اجرای کد زیر، مقدار <code>c.count</code> چقدر میشه؟",p:3,
+ code:`class Counter:
+    def __init__(self):
+        self.count = 0
+    def add(self):
+        self.count += 1
+
+c = Counter()
+for i in range(5):
+    c.add()`,
+ o:["0","5","1","3"],a:1,
+ w:"حلقه ۵ بار اجرا میشه و هر بار <code>count</code> یکی زیاد میشه."},
+
+{t:"خروجی کد زیر چیه؟",p:5,
+ code:`words = ["ali:20", "reza:18", "sara:19"]
+result = list(map(lambda x: x.split(":")[0].upper(), words))
+print(result)`,
+ o:["[\"ALI\", \"REZA\", \"SARA\"]","[\"19\", \"18\", \"20\"]","[\"ali\", \"reza\", \"sara\"]","هیچ کدام"],a:0,
+ w:"<code>split(\":\")</code> رشته رو به دو بخش می‌شکنه، <code>[0]</code> اسم رو برمی‌داره و <code>upper()</code> حروف بزرگ می‌کنه."},
+
+{t:"در کلاس <code>Lamp</code> متدی به نام <code>switch()</code> تعریف کن که مقدار <code>is_on</code> رو هر بار برعکس کنه.",p:8,
+ code:`class Lamp:
+    def __init__(self):
+        self.is_on = False
+
+    def switch(self):
+        self.is_on = not self.is_on
+
+lamp = Lamp()
+lamp.switch()
+print(lamp.is_on)`,
+ out:"True",
+ w:"عملگر <code>not</code> مقدار بولی رو برعکس می‌کنه، پس بدون نیاز به <code>if</code> کار روشن و خاموش انجام میشه."},
+
+{t:"با <code>pandas</code> فایل <code>reports.csv</code> رو بخون و اطلاعات دانش‌آموزهایی که معدل ۲۰ و غیبت ۰ دارن رو نمایش بده.",p:10,
+ code:`import pandas as pd
+
+df = pd.read_csv("reports.csv")
+result = df[(df["score"] == 20) & (df["absence"] == 0)]
+print(result)`,
+ w:"برای ترکیب چند شرط در pandas از <code>&</code> (و) و <code>|</code> (یا) استفاده میشه و هر شرط باید داخل پرانتز باشه. به‌جای <code>and</code> و <code>or</code> معمولی."}
+];
+
+const LEVELS = {
+  1:{title:"جزوه امتحان مقدماتی", badge:"سطح ۱ • مقدماتی",
+     sub:"مرور سوال‌ها، پاسخ‌ها و نکته‌های هر سوال: لیست، دیکشنری، حلقه‌ها، شرط‌ها و رشته‌ها در پایتون.",
+     Q:Q1},
+  2:{title:"جزوه امتحان نهایی", badge:"سطح ۲ • نهایی",
+     sub:"مرور سوال‌ها، پاسخ‌ها و نکته‌های هر سوال: توابع، کلاس‌ها، فایل‌ها، pandas، numpy و تاریخ و زمان.",
+     Q:Q2}
+};
+
+/* ========== ابزارها ========== */
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const fa = n => n.toLocaleString("fa-IR");
+const LETTERS = ["الف","ب","ج","د","ه","و"];
+
+const ICON_COPY = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>';
+const ICON_BULB = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.1 2.2h5c0-.9.5-1.7 1.1-2.2A6 6 0 0 0 12 3z"/></svg>';
+
+/* هایلایت ساده‌ی پایتون */
+const TOKEN = /(#[^\n]*)|("""[\s\S]*?"""|[fF]?"(?:\\.|[^"\\\n])*"|[fF]?'(?:\\.|[^'\\\n])*')|\b(\d+(?:\.\d+)?)\b|\b(def|class|return|if|elif|else|for|while|in|not|and|or|import|as|from|try|except|with|break|continue|pass|lambda|None|True|False|is|raise|finally)\b|\b(print|len|range|int|str|float|list|map|filter|sum|input|open|dict|set|tuple|min|max)\b(?=\()|\b([A-Za-z_]\w*)(?=\()/g;
+function highlight(src){
+  let out = "", last = 0, m;
+  TOKEN.lastIndex = 0;
+  while((m = TOKEN.exec(src))){
+    out += esc(src.slice(last, m.index));
+    const cls = m[1] ? "com" : m[2] ? "str" : m[3] ? "num" : m[4] ? "kw" : m[5] ? "bi" : "fn";
+    out += `<span class="t-${cls}">${esc(m[0])}</span>`;
+    last = m.index + m[0].length;
+  }
+  return out + esc(src.slice(last));
+}
+
+function codeBlock(src, tag){
+  return `<div class="code"><div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="lang">Python${tag ? `<em>${tag}</em>` : ""}</span><button type="button" class="copy">${ICON_COPY}<span>کپی</span></button></div><pre tabindex="0"><code>${highlight(src)}</code></pre></div>`;
+}
+
+function card(q, i){
+  const hasOpts = Array.isArray(q.o);
+  const code = q.code ? codeBlock(q.code, hasOpts ? "" : "پاسخ نمونه") : "";
+  const opts = hasOpts
+    ? `<ul class="opts">${q.o.map((x,j)=>`<li class="opt${q.a===j?" ok":""}"><span class="ltr">${LETTERS[j]||j+1}</span><code>${esc(x).replace(/\n/g,"<br>")}</code>${q.a===j?'<span class="ok-tag">پاسخ درست</span>':""}</li>`).join("")}</ul>`
+    : "";
+  const out = q.out ? `<div class="out"><div class="out-h">output</div><div class="out-b">${esc(q.out)}</div></div>` : "";
+  return `<section class="q" style="--i:${Math.min(i,8)}">
+    <div class="q-head"><div class="num">${fa(i+1)}</div><p class="q-text">${q.t}</p><span class="pts">${fa(q.p)} نمره</span></div>
+    ${code}${opts}${out}
+    <div class="why">${ICON_BULB}<div><b>نکته:</b> ${q.w}</div></div>
+  </section>`;
+}
+
+/* ========== نمایش هر سطح ========== */
+let current = 0;
+function render(level, opts = {}){
+  const L = LEVELS[level];
+  if(!L) return;
+  current = level;
+  document.documentElement.dataset.level = level;
+  document.title = `${L.title} | ایران دیجیتال`;
+  const sw = $("#switch");
+  sw.dataset.level = level;
+  sw.querySelectorAll("button").forEach(b => b.setAttribute("aria-selected", String(+b.dataset.lv === level)));
+
+  const total = L.Q.reduce((s,q)=>s+q.p, 0);
+  const coding = L.Q.filter(q=>!Array.isArray(q.o)).length;
+  const other = level === 1 ? 2 : 1;
+
+  const app = $("#app");
+  app.classList.remove("enter");
+  app.innerHTML = `
+    <div class="hero">
+      <span class="eyebrow">${L.badge}</span>
+      <h1>${L.title}</h1>
+      <p>${L.sub}</p>
+      <div class="stats">
+        <div class="stat"><b>${fa(L.Q.length)}</b><span>سوال</span></div>
+        <div class="stat"><b>${fa(total)}</b><span>مجموع نمره</span></div>
+        <div class="stat"><b>${fa(coding)}</b><span>سوال کدنویسی</span></div>
+      </div>
+    </div>
+    <div id="list">${L.Q.map(card).join("")}</div>
+    <div class="next"><button type="button" data-lv="${other}">رفتن به ${LEVELS[other].badge.split(" • ")[0]} ←</button></div>`;
+  void app.offsetWidth;
+  app.classList.add("enter");
+
+  if(!opts.silent){
+    try{ localStorage.setItem("jozve-level", level); }catch(e){}
+    try{ history.replaceState(null, "", "#level-" + level); }catch(e){}
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+  updateBar();
+}
+
+/* ========== رویدادها ========== */
+document.addEventListener("click", e => {
+  const lv = e.target.closest("[data-lv]");
+  if(lv){ const n = +lv.dataset.lv; if(n !== current) render(n); return; }
+
+  const btn = e.target.closest(".copy");
+  if(btn){
+    const text = btn.closest(".code").querySelector("pre").textContent;
+    const done = () => {
+      const label = btn.querySelector("span");
+      label.textContent = "کپی شد ✓"; btn.classList.add("done");
+      setTimeout(()=>{ label.textContent = "کپی"; btn.classList.remove("done"); }, 1500);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done, () => { fallbackCopy(text); done(); });
+    }else{ fallbackCopy(text); done(); }
+  }
+});
+function fallbackCopy(text){
+  const ta = document.createElement("textarea");
+  ta.value = text; ta.style.cssText = "position:fixed;opacity:0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); }catch(e){}
+  ta.remove();
+}
+
+/* Ctrl+A داخل کادر کد فقط همون کادر رو انتخاب کنه */
+document.addEventListener("keydown", e => {
+  if(!(e.ctrlKey || e.metaKey)) return;
+  if(!(e.code === "KeyA" || (e.key && e.key.toLowerCase() === "a"))) return;
+  const sel = getSelection();
+  let pre = document.activeElement && document.activeElement.closest ? document.activeElement.closest("pre") : null;
+  if(!pre && sel.anchorNode){
+    const el = sel.anchorNode.nodeType === 1 ? sel.anchorNode : sel.anchorNode.parentElement;
+    pre = el && el.closest ? el.closest("pre") : null;
+  }
+  if(!pre) return;
+  e.preventDefault();
+  const r = document.createRange();
+  r.selectNodeContents(pre.querySelector("code"));
+  sel.removeAllRanges(); sel.addRange(r);
+});
+
+/* نوار پیشرفت مطالعه */
+function updateBar(){
+  const h = document.documentElement;
+  const max = h.scrollHeight - h.clientHeight;
+  $("#bar").style.transform = `scaleX(${max > 0 ? Math.min(1, h.scrollTop / max) : 0})`;
+}
+addEventListener("scroll", updateBar, {passive:true});
+addEventListener("resize", updateBar);
+
+/* سطح اولیه: هش آدرس > حافظه‌ی مرورگر > سطح ۱ */
+(function init(){
+  let lv = 1;
+  const m = location.hash.match(/level-(\d)/);
+  if(m && LEVELS[+m[1]]) lv = +m[1];
+  else{ try{ const s = +localStorage.getItem("jozve-level"); if(LEVELS[s]) lv = s; }catch(e){} }
+  render(lv, {silent:true});
+})();
+addEventListener("hashchange", () => {
+  const m = location.hash.match(/level-(\d)/);
+  if(m && LEVELS[+m[1]] && +m[1] !== current) render(+m[1]);
+});
+</script>
 </body>
 </html>
